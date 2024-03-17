@@ -1,15 +1,28 @@
 import * as vscode from 'vscode';
 import * as cp from 'child_process';
+import * as os from 'os';
 
 let intervalId: any; // 타이머 ID 저장
 let statusBarLanguage: vscode.StatusBarItem; // 상태 표시줄 항목
 let originalCursorColor: string | undefined; // 원래 커서 색상 저장
 
+const PLATFORM = os.platform();
 const MAC_OS_COMMAND = `defaults read ~/Library/Preferences/com.apple.HIToolbox.plist AppleSelectedInputSources`;
+const WINDOWS_OS_COMMAND = `Get-WinUserLanguageList | Select-Object -ExpandProperty InputMethodTips`;
+const LINUX_OS_COMMAND = `setxkbmap -query | grep layout`;
 
 async function getCurrentKeyboardLanguage() {
   return new Promise((resolve, reject) => {
-    let command = MAC_OS_COMMAND;
+    let command = '';
+    if (PLATFORM === 'darwin') {
+      command = MAC_OS_COMMAND;
+    } else if (PLATFORM === 'win32') {
+      command = WINDOWS_OS_COMMAND;
+    } else if (PLATFORM === 'linux') {
+      command = LINUX_OS_COMMAND;
+    } else {
+      return reject('en');
+    }
 
     cp.exec(command, (error, stdout, stderr) => {
       if (error) {
@@ -65,7 +78,7 @@ export function activate(context: vscode.ExtensionContext) {
         } else {
           await changeCursorColor('#ff0000');
         }
-      }, 300);
+      }, 200);
 
       context.subscriptions.push({
         dispose() {

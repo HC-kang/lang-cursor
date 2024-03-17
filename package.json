@@ -1,10 +1,12 @@
 {
   "name": "lang-cursor",
   "displayName": "lang-cursor",
-  "description": "",
-  "version": "0.0.1",
+  "description": "this extension shows current input language with your cursor and status bar.",
+  "version": "0.0.2",
+  "publisher": "weston0713",
+  "readme": "./README.md",
   "engines": {
-    "vscode": "^1.87.0"
+    "vscode": "^1.85.2"
   },
   "categories": [
     "Other"
@@ -35,7 +37,7 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.87.0",
+    "@types/vscode": "^1.85.2",
     "@types/mocha": "^10.0.6",
     "@types/node": "18.x",
     "@typescript-eslint/eslint-plugin": "^7.0.2",
